@@ -65,3 +65,4 @@ git push origin :old_branch                 # Delete the old branch
 git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
 ```
 https://gist.github.com/lttlrck/9628955
+https://github.com/git-tfs/git-tfs/blob/master/doc/usecases/migrate_tfs_to_git.md
