@@ -31,13 +31,17 @@ iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.p
 3. Anschliessend muss man ein neues Repository erstellen welche nun natürlich GIT als Versionskontroll System verwendet.
 ![GIT Repository erstellen](Images/2016-04-11 18_00_33-$_Signgate - Microsoft Team Foundation Server.png)
 
-4. Mit dem Tool https://github.com/git-tfs/git-tfs von Github kann auch TFVC von der GIT Konsole angesprochen werden, daher muss dies auch installiert werden. https://gittf.codeplex.com/
+4. Mit dem Tool [GIT TFS](https://github.com/git-tfs/git-tfs) auf Github kann auch TFVC von der GIT Konsole angesprochen werden, daher muss dies auch installiert werden.
 Kann einfach mit chocolatey installiert werden
+```
+C:\> choco install gittfs
+```
 
 5. In meinen Tests funktionierte die Migration nicht mit Git Bash daher verwende ich Powershell mit dem Befehl werden alle Checkins aus einem TFVC Repository in ein lokales Git Repository migriert
 ```
 git tfs clone https://TFS_SERVER:443/tfs/Collection $/project/branch . --branches=all
 ```
+
 6. Mit folgendem Befehl werden anschliessend die Commit Messages welche von der Migration verschandelt wurden wieder in Ordnung gebracht:
 ```
 git filter-branch -f --msg-filter "sed 's/^git-tfs-id:.*$//g'" -- --all
@@ -54,3 +58,10 @@ git remote add origin https://TFS_SERVER:443/tfs/project.git
 ```
 git push --all origin
 ```
+10. In unserem Fall hatten die Branches welche migriert wurden noch unschöne Namen wenn du diese auch anpassen möchtest kannst du folgendermassen vorgehen:
+```
+git branch -m old_branch new_branch         # Rename branch locally    
+git push origin :old_branch                 # Delete the old branch    
+git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
+```
+https://gist.github.com/lttlrck/9628955
